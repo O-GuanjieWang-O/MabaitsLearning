@@ -54,11 +54,12 @@ public class MybatisTest {
 
     @Test
     public void testSelectByCondition() throws IOException {
-        int status = 1;
+        Integer status = null ;
         String companyName = "华为";
         String brandName = "华为";
         companyName = "%"+companyName+"%";
         brandName = "%"+brandName+"%";
+
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

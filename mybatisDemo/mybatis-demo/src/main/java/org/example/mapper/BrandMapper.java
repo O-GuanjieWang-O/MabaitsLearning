@@ -11,6 +11,6 @@ public interface BrandMapper {
     Brand selectById(int id);
     //条件查询
     //可以使用Map, New POJO 和写死的方式实现
-    List<Brand> selectByCondition(@Param("status") int status, @Param("companyName") String companyName,
+    List<Brand> selectByCondition(@Param("status") Integer status, @Param("companyName") String companyName,
                                   @Param("brandName") String brandName);
 }
