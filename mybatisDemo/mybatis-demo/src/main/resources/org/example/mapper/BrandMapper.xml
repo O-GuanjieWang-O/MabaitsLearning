@@ -3,7 +3,51 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.mapper.BrandMapper">
-    <select id="selectAll" resultType="org.example.POJO.Brand">
+<!--
+    数据库表的字段名称 和 实体类的属性名称不一样， 则不能自动封装
+    * 起别名： 对不一样的列名起别名，让别名和实体类的属性名一样
+            * 缺点： 每次查询都要定义别名
+    * sql 片段：
+        * 缺点： 不灵活
+    * resultMap:
+        1. 定义<resultMap> 标签
+        2. 在<select>标签中，使用resultMap 代替resultType 
+-->
+
+
+<!--
+    sql 片段不灵活
+-->
+<!--    <sql id = "brand">-->
+<!--        id, brand_name, company_name, ordered, description, status-->
+<!--    </sql>-->
+<!--    <select id="selectAll" resultType="org.example.POJO.Brand">-->
+<!--        select-->
+<!--        <include refid="brand"></include>-->
+<!--        from tb_brand-->
+<!--    </select>-->
+
+<!--正常情况下处理数据-->
+<!--    <select id="selectAll" resultType="org.example.POJO.Brand">-->
+<!--        select * from tb_brand;-->
+<!--    </select>-->
+
+<!--
+    id: 唯一标识
+    type: 映射类型
+-->
+    <resultMap id="brandResultMap" type="org.example.POJO.Brand">
+<!--
+    id: 完成主键映射
+        column: 表的列名
+        property： 实体类的属性名
+    result: 完成一般字段映射
+        column: 表的列名
+        property： 实体类的属性名
+-->
+        <result column="brand_name" property="brand_name"/>
+    </resultMap>
+    <select id="selectAll" resultMap="brandResultMap">
         select * from tb_brand;
     </select>
 </mapper>
