@@ -123,4 +123,36 @@
             </if>
         </where>
     </select>
+
+
+<!--
+    单一条件的动态查询 == switch
+        <choose>
+            <when test = "">
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+-->
+
+    <select id="selectByConditionSingle" resultType="org.example.POJO.Brand">
+        select * from tb_brand
+        <where>
+            <choose>
+                <when test="status != null">
+                    status = #{status}
+                </when>
+                <when test = "companyName != null and companyName != '' ">
+                    company_name like #{companyName}
+                </when>
+                <when test = "brandName != null and brandName != '' ">
+                    brand_name like #{brandName}
+                </when>
+                <otherwise>
+                    1 = 1
+                </otherwise>
+            </choose>
+        </where>
+
+    </select>
 </mapper>

@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MybatisTest {
     //查询全部的内容
@@ -70,6 +72,37 @@ public class MybatisTest {
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
 
         List<Brand> brands = brandMapper.selectByCondition(status,companyName,brandName);
+
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
+
+
+    @Test
+    public void testSelectByConditionSingle() throws IOException {
+        Integer status = 1 ;
+        String companyName = "";
+        String brandName = "";
+        companyName = "%"+companyName+"%";
+        brandName = "%"+brandName+"%";
+
+        Map map = new HashMap();
+
+//        map.put("status",status);
+//        map.put("companyName",companyName);
+//        map.put("brandName",brandName);
+
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        List<Brand> brands = brandMapper.selectByConditionSingle(map);
 
         System.out.println(brands);
 
