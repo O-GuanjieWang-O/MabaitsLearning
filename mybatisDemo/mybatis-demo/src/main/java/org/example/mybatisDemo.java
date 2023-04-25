@@ -13,11 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+//the simple Mybatis demo which to get familiar with mybatis
 public class mybatisDemo {
 
     public static void main(String[] args) throws IOException {
-        Logger logger = LoggerFactory.getLogger(mybatisDemo.class);
-        logger.debug("dfasfd");
         //load core conponat
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
