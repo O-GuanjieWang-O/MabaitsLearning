@@ -21,6 +21,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="org/example/mapper/UserMapper.xml"/>
+        <package name = "org.example.mapper"/>
     </mappers>
 </configuration>
