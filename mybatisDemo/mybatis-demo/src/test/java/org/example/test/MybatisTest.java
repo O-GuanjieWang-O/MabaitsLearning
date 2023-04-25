@@ -50,4 +50,28 @@ public class MybatisTest {
 
         sqlSession.close();
     }
+
+
+    @Test
+    public void testSelectByCondition() throws IOException {
+        int status = 1;
+        String companyName = "华为";
+        String brandName = "华为";
+        companyName = "%"+companyName+"%";
+        brandName = "%"+brandName+"%";
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        List<Brand> brands = brandMapper.selectByCondition(status,companyName,brandName);
+
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
 }
