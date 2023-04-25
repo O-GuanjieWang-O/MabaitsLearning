@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BrandMapper {
     List<Brand> selectAll();
+//    查看详情
+    Brand selectById(int id);
 }

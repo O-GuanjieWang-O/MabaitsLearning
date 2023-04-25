@@ -11,7 +11,7 @@
         * 缺点： 不灵活
     * resultMap:
         1. 定义<resultMap> 标签
-        2. 在<select>标签中，使用resultMap 代替resultType 
+        2. 在<select>标签中，使用resultMap 代替resultType
 -->
 
 
@@ -32,7 +32,7 @@
 <!--        select * from tb_brand;-->
 <!--    </select>-->
 
-<!--
+<!-- resultMap
     id: 唯一标识
     type: 映射类型
 -->
@@ -49,5 +49,28 @@
     </resultMap>
     <select id="selectAll" resultMap="brandResultMap">
         select * from tb_brand;
+    </select>
+
+
+
+
+<!--
+    * 参数占位符
+        1. #{}： 会将其替换为 ？. 为了防止sql 注入
+        2. ${}： 拼sql. 会存在sql 注入问题
+        3. 使用时机：
+            * 在参数传递中： #{}
+            * ${}: 表名or 列名不确定
+     * 参数类型：
+        parameterType: 可以不写
+     * 特殊字符处理：
+        1. 转译字符：
+        2. CDATA 区：
+    -->
+<!--    <select id="selectById"  parameterType="int" resultMap="brandResultMap">-->
+<!--        select * from tb_brand where id = #{id};-->
+<!--    </select>-->
+    <select id="selectById"  parameterType="int" resultMap="brandResultMap">
+        select * from tb_brand where id = #{id}; 
     </select>
 </mapper>
