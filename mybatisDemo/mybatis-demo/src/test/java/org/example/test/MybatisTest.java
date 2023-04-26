@@ -108,4 +108,69 @@ public class MybatisTest {
 
         sqlSession.close();
     }
+
+    @Test
+    public void testAddBrand() throws IOException {
+        Brand brand = new Brand();
+        brand.setBrandName("Oppo");
+        brand.setDescription("充电5分钟，通话2小时");
+        brand.setOrdered(500);
+        brand.setCompanyName("欧普科技有限责任公司");
+        brand.setStatus(1);
+
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        //SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        brandMapper.deleteById("tb_brand",5);
+        List<Brand> brands = brandMapper.selectAll();
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
+
+    //alter table 删除ID列，并更改其顺序
+    @Test
+    public void testdAlterTable() throws IOException {
+
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        brandMapper.alterTable();
+
+        List<Brand> brands = brandMapper.selectAll();
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
+
+    //delete 对应id 的内容
+    @Test
+    public void testDeleteById() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        //SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        brandMapper.deleteById("tb_brand",5);
+
+        List<Brand> brands = brandMapper.selectAll();
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
 }

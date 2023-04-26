@@ -45,8 +45,10 @@
         column: 表的列名
         property： 实体类的属性名
 -->
-        <result column="brand_name" property="brand_name"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
     </resultMap>
+
     <select id="selectAll" resultMap="brandResultMap">
         select * from tb_brand;
     </select>
@@ -153,6 +155,27 @@
                 </otherwise>
             </choose>
         </where>
-
     </select>
+
+<!--    添加内容-->
+    <insert id="addBrand">
+        insert into tb_brand (brand_name, company_name, ordered, description, status) values
+        (#{brandName}, #{companyName},#{ordered},#{description},#{status});
+    </insert>
+
+<!--    删除表中的一列-->
+    <update id="alterTable">
+        alter table tb_brand drop id;
+        alter table tb_brand
+            add id int not null auto_increment first,
+            add primary key(id);
+    </update>
+
+    <!--    删除表中的数据-->
+    <delete id="deleteById">
+        delete from ${tableName}
+        <where>
+            id = #{id}
+        </where>
+    </delete>
 </mapper>

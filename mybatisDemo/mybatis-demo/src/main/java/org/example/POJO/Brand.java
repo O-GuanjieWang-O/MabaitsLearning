@@ -2,8 +2,8 @@ package org.example.POJO;
 
 public class Brand {
    private Integer id              ;
-   private String brand_name        ;
-   private String company_name  ;
+   private String brandName        ;
+   private String companyName  ;
    private Integer ordered       ;
    private String description   ;
    private Integer status        ;
@@ -16,20 +16,20 @@ public class Brand {
         this.id = id;
     }
 
-    public String getBrand_name() {
-        return brand_name;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setBrand_name(String brand_name) {
-        this.brand_name = brand_name;
+    public void setBrandName(String brand_name) {
+        this.brandName = brand_name;
     }
 
-    public String getCompany_name() {
-        return company_name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
+    public void setCompanyName(String company_name) {
+        this.companyName = company_name;
     }
 
     public Integer getOrdered() {
@@ -60,8 +60,8 @@ public class Brand {
     public String toString() {
         return "Brand{" +
                 "id=" + id +
-                ", brand_name='" + brand_name + '\'' +
-                ", company_name='" + company_name + '\'' +
+                ", brand_name='" + brandName + '\'' +
+                ", company_name='" + companyName + '\'' +
                 ", ordered=" + ordered +
                 ", description='" + description + '\'' +
                 ", status=" + status +

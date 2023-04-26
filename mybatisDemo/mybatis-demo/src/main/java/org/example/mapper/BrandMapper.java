@@ -16,4 +16,11 @@ public interface BrandMapper {
                                   @Param("brandName") String brandName);
 
     List<Brand> selectByConditionSingle(Map map);
+
+    //添加
+    void addBrand(Brand brand);
+
+    void alterTable();
+
+    void deleteById(@Param("tableName") String tbName, @Param("id") Integer Id);
 }
