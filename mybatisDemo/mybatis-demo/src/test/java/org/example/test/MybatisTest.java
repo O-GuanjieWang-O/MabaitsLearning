@@ -173,4 +173,32 @@ public class MybatisTest {
 
         sqlSession.close();
     }
+
+    //主键返回
+    @Test
+    public void testAddBrandReturnId() throws IOException {
+        Brand brand = new Brand();
+        brand.setBrandName("Oppo");
+        brand.setDescription("充电5分钟，通话2小时");
+        brand.setOrdered(500);
+        brand.setCompanyName("欧普科技有限责任公司");
+        brand.setStatus(1);
+
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        //SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        brandMapper.addBrand(brand);
+        System.out.println(brand.getId());
+        brandMapper.alterTable();
+        List<Brand> brands = brandMapper.selectAll();
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
 }
