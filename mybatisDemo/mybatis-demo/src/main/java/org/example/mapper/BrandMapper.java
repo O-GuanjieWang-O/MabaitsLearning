@@ -23,4 +23,8 @@ public interface BrandMapper {
     void alterTable();
 
     void deleteById(@Param("tableName") String tbName, @Param("id") Integer Id);
+
+    void update(Brand brand);
+
+    void updateByCondition(Brand brand);
 }

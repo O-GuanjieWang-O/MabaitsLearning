@@ -1,5 +1,6 @@
 package org.example.test;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -195,6 +196,61 @@ public class MybatisTest {
 
         brandMapper.addBrand(brand);
         System.out.println(brand.getId());
+        brandMapper.alterTable();
+        List<Brand> brands = brandMapper.selectAll();
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
+    //修改全部字段
+    @Test
+    public void testUpdate() throws IOException {
+        Brand brand = new Brand();
+        brand.setBrandName("Oppo");
+        brand.setDescription("你本来就很美");
+        brand.setOrdered(12);
+        brand.setCompanyName("欧普科技有限责任公司");
+        brand.setStatus(1);
+        brand.setId(4);
+
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        //SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        brandMapper.update(brand);
+
+        brandMapper.alterTable();
+        List<Brand> brands = brandMapper.selectAll();
+        System.out.println(brands);
+
+        sqlSession.close();
+    }
+
+    @Test
+    public void testUpdateByCondition() throws IOException {
+        Brand brand = new Brand();
+        brand.setBrandName("Oppo");
+        brand.setDescription("你本来就很美,ssssssssss");
+        brand.setCompanyName("欧普科技有限责任公司");
+        brand.setStatus(1);
+        brand.setId(4);
+
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        //2. get sqlsessioin object
+        //SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+
+        brandMapper.updateByCondition(brand);
+
         brandMapper.alterTable();
         List<Brand> brands = brandMapper.selectAll();
         System.out.println(brands);

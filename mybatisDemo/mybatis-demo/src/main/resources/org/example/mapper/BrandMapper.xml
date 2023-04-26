@@ -171,6 +171,7 @@
             add primary key(id);
     </update>
 
+
     <!--    删除表中的数据-->
     <delete id="deleteById">
         delete from ${tableName}
@@ -178,4 +179,42 @@
             id = #{id}
         </where>
     </delete>
+
+<!--    修改全部字段-->
+    <update id="update">
+        update tb_brand
+        set brand_name = #{brandName},
+            company_name = #{companyName},
+            ordered = #{ordered},
+            description = #{description},
+            status = #{status}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--    修改动态字段-->
+    <update id="updateByCondition">
+        update tb_brand
+        <set>
+            <if test="brandName != '' and brandName != null">
+                brand_name = #{brandName},
+            </if>
+            <if test="companyName != '' and companyName != null">
+                company_name = #{companyName},
+            </if>
+            <if test="ordered != null">
+                ordered = #{ordered},
+            </if>
+            <if test="description != '' and description != null">
+                description = #{description},
+            </if>
+            <if test="status != null and status &lt; 2 and status &gt; -1">
+                status = #{status}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
 </mapper>
