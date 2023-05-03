@@ -3,11 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
     <settings>
-        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <setting name="logImpl" value="LOG4J"/>
     </settings>
+
     <typeAliases>
-        <package name="org.example.POJO"/>
+        <package name="org.example.mybatisLog4j.POJO"/>
     </typeAliases>
 <!--    environment: 配置数据库连接环境， 可以配置多个environment， 通过default 切换
 -->
@@ -24,6 +26,6 @@
         </environment>
     </environments>
     <mappers>
-        <package name = "org.example.mapper"/>
+       <mapper resource="mapper/UserMapper.xml"/>
     </mappers>
 </configuration>

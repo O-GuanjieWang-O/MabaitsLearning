@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatisLog4j.mapper.UserMapper">
+    <resultMap id="UserMap" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="pwd" property="password"/>
+
+    </resultMap>
+    <select id="selectAll" resultMap="UserMap">
+        select * from tb_user;
+    </select>
+    <select id="selectById" resultMap="UserMap">
+        select * from tb_user where id = #{id};
+    </select>
+</mapper>

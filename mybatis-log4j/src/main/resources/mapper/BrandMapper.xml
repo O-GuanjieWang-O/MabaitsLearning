@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mybatisLog4j.mapper.BrandMapper">
+<!--
+    数据库表的字段名称 和 实体类的属性名称不一样， 则不能自动封装
+    * 起别名： 对不一样的列名起别名，让别名和实体类的属性名一样
+            * 缺点： 每次查询都要定义别名
+    * sql 片段：
+        * 缺点： 不灵活
+    * resultMap:
+        1. 定义<resultMap> 标签
+        2. 在<select>标签中，使用resultMap 代替resultType
+-->
+
+
+<!--
+    sql 片段不灵活
+-->
+<!--    <sql id = "brand">-->
+<!--        id, brand_name, company_name, ordered, description, status-->
+<!--    </sql>-->
+<!--    <select id="selectAll" resultType="org.example.POJO.Brand">-->
+<!--        select-->
+<!--        <include refid="brand"></include>-->
+<!--        from tb_brand-->
+<!--    </select>-->
+
+<!--正常情况下处理数据-->
+<!--    <select id="selectAll" resultType="org.example.POJO.Brand">-->
+<!--        select * from tb_brand;-->
+<!--    </select>-->
+
+<!-- resultMap
+    id: 唯一标识
+    type: 映射类型
+-->
+    <resultMap id="brandResultMap" type="org.example.mybatisLog4j.POJO.Brand">
+<!--
+    id: 完成主键映射
+        column: 表的列名
+        property： 实体类的属性名
+    result: 完成一般字段映射
+        column: 表的列名
+        property： 实体类的属性名
+-->
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="brandResultMap">
+        select * from tb_brand;
+    </select>
+
+
+
+
+<!--
+    * 参数占位符
+        1. #{}： 会将其替换为 ？. 为了防止sql 注入
+        2. ${}： 拼sql. 会存在sql 注入问题
+        3. 使用时机：
+            * 在参数传递中： #{}
+            * ${}: 表名or 列名不确定
+     * 参数类型：
+        parameterType: 可以不写
+     * 特殊字符处理：
+        1. 转译字符：
+        2. CDATA 区：CD
+    -->
+<!--    <select id="selectById"  parameterType="int" resultMap="brandResultMap">-->
+<!--        select * from tb_brand where id = #{id};-->
+<!--    </select>-->
+    <select id="selectById"  parameterType="int" resultMap="brandResultMap">
+        select * from tb_brand where id = #{id};
+    </select>
+
+
+<!--&lt;!&ndash;-->
+<!--    条件查询-->
+<!--&ndash;&gt;-->
+<!--    <select id="selectByCondition" resultMap="brandResultMap">-->
+<!--        select * from tb_brand-->
+<!--        where status = #{status}-->
+<!--            and company_name like #{companyName}-->
+<!--            and brand_name like #{brandName}-->
+<!--    </select>-->
+
+    <!--
+    动态条件查询
+        * if 条件判断
+            * test: 逻辑表达式
+        * 问题：
+            * 解决：
+                * 恒等式
+                    <select id="selectByCondition" resultMap="brandResultMap">
+                        select * from tb_brand
+                        where 1 = 1
+                        <if test="status != null">
+                            and status = #{status}
+                        </if>
+                        <if test = "companyName != null and companyName != '' ">
+                            and company_name like #{companyName}
+                        </if>
+                        <if test = "brandName != null and brandName != '' ">
+                            and brand_name like #{brandName}
+                        </if>
+
+                    </select>
+                * <where> 标签
+-->
+    <select id="selectByCondition" resultMap="brandResultMap">
+        select * from tb_brand
+<!--        where 1 = 1-->
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test = "companyName != null and companyName != '' ">
+                and company_name like #{companyName}
+            </if>
+            <if test = "brandName != null and brandName != '' ">
+                and brand_name like #{brandName}
+            </if>
+        </where>
+    </select>
+
+
+<!--
+    单一条件的动态查询 == switch
+        <choose>
+            <when test = "">
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+-->
+
+    <select id="selectByConditionSingle" resultType="org.example.mybatisLog4j.POJO.Brand">
+        select * from tb_brand
+        <where>
+            <choose>
+                <when test="status != null">
+                    status = #{status}
+                </when>
+                <when test = "companyName != null and companyName != '' ">
+                    company_name like #{companyName}
+                </when>
+                <when test = "brandName != null and brandName != '' ">
+                    brand_name like #{brandName}
+                </when>
+                <otherwise>
+                    1 = 1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+<!--    添加内容-->
+    <insert id="addBrand" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_brand (brand_name, company_name, ordered, description, status) values
+        (#{brandName}, #{companyName},#{ordered},#{description},#{status});
+    </insert>
+
+<!--    删除表中的一列-->
+    <update id="alterTable">
+        alter table tb_brand drop id;
+        alter table tb_brand
+            add id int not null auto_increment first,
+            add primary key(id);
+    </update>
+
+
+    <!--    删除表中的数据-->
+    <delete id="deleteById">
+        delete from ${tableName}
+        <where>
+            id = #{id}
+        </where>
+    </delete>
+
+<!--    修改全部字段-->
+    <update id="update">
+        update tb_brand
+        set brand_name = #{brandName},
+            company_name = #{companyName},
+            ordered = #{ordered},
+            description = #{description},
+            status = #{status}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--    修改动态字段-->
+    <update id="updateByCondition">
+        update tb_brand
+        <set>
+            <if test="brandName != '' and brandName != null">
+                brand_name = #{brandName},
+            </if>
+            <if test="companyName != '' and companyName != null">
+                company_name = #{companyName},
+            </if>
+            <if test="ordered != null">
+                ordered = #{ordered},
+            </if>
+            <if test="description != '' and description != null">
+                description = #{description},
+            </if>
+            <if test="status != null and status &lt; 2 and status &gt; -1">
+                status = #{status}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+</mapper>
